@@ -60,7 +60,7 @@ public class Frame_CS extends JFrame {
 
 
     SeatDTO dto=new SeatDTO();//좌석 정보를 생성
-    SeatDAO dao=new SeatDAO();
+    SeatDAO dao=new SeatDAO();//좌석 db
     DefaultTableModel model
             =new DefaultTableModel();
 
@@ -77,7 +77,7 @@ public class Frame_CS extends JFrame {
 
     public Frame_CS() {
         Frame_C c= new Frame_C();
-
+        //탭 이름 설정
         jtp.addTab("Customer", Frame_C.contentPane1);
         jtp.addTab("Seat", contentPane2);
         getContentPane().add(jtp);
@@ -137,14 +137,14 @@ public class Frame_CS extends JFrame {
         });
 
         table.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                System.out.println("mousePressed()");
-                int row=table.getSelectedRow();
+            public void mousePressed(MouseEvent e) {//테이블에 마우스를 감지하는 기능 추가
+                System.out.println("mousePressed()");//출력
+                int row=table.getSelectedRow();//테이블의 행을 누르면 row에 저장
                 setTitle(row+"행");
                 for(int i=0;i<4;i++){
                     Object obj
-                            =table.getValueAt(row, i);
-                    String objStr=obj.toString();
+                            =table.getValueAt(row, i);//테이블 행의 열마다 obj에 저장
+                    String objStr=obj.toString();//문자열로 형변환
                     switch(i){
                         case 0:
                             tfRno.setText(objStr);
@@ -168,76 +168,76 @@ public class Frame_CS extends JFrame {
             }
         });
 
-        btAdd.setBackground(Color.PINK);
-        btAdd.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Add actionPerformed()");
-                if(cmd!=ADD){  //모든 메뉴중에 ADD를 마우스로 클릭했을때
-                    setEnabled(ADD);
+        btAdd.setBackground(Color.PINK);//배경색 분홍
+        btAdd.addActionListener(new ActionListener() {//동작을 감지하는 기능 추가
+            public void actionPerformed(ActionEvent e) {//동작을 감지
+                System.out.println("Add actionPerformed()");//출력
+                if(cmd!=ADD){  //모든 메뉴중에 ADD를 마우스로 클릭했을때 cmd = 0 add = 1
+                    setEnabled(ADD);//버튼을 활성화
                     tfSno.requestFocus();//커서
 
-                }else{
-                    add();
-                    setEnabled(NONE);
-                    cmd=NONE;
-                    initialTf();
+                }else{//cmd = 1 add = 1
+                    add();//자리 추가
+                    setEnabled(NONE);//버튼 활성화
+                    cmd=NONE;//cmd = 0
+                    initialTf();//입력칸 비활성화
                     clearTf(); //입력하는 칸을 빈칸으로 만들어줌
                 }
             }
         });
-        btFind.setBackground(Color.PINK);
+        btFind.setBackground(Color.PINK);//배경색 분홍색
         btFind.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Find actionPerformed()");
-                if(cmd!=FIND){
-                    setEnabled(FIND);
+                if(cmd!=FIND){// cmd = 0 cmd = 3
+                    setEnabled(FIND);//버튼활성화
                     tfId.requestFocus();
                 }else{
-                    showData(FIND);
-                    cmd=NONE;
-                    setEnabled(cmd);
-                    initialTf();
-                    clearTf();
+                    showData(FIND);//테이블과 좌석 표시
+                    cmd=NONE;//cmd = 0
+                    setEnabled(cmd);//버튼 활성화
+                    initialTf();//입력칸 비활성화
+                    clearTf();//입력칸 빈칸
 
                 }
             }
         });
-        btAll.setBackground(Color.PINK);
-        btAll.setText("ALL");
+        btAll.setBackground(Color.PINK);//배경색 분홍
+        btAll.setText("ALL");//텍스트 추가
         btAll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("All actionPerformed()");
-                cmd=ALL;
-                setEnabled(cmd);
-                initialTf();
-                showData(ALL);
+                cmd=ALL;//cmd = 4
+                setEnabled(cmd);//버튼 활성화
+                initialTf();//입력칸 비활성화
+                showData(ALL);//테이블에 데이터 표시
             }
         });
-        btDel.setBackground(Color.PINK);
-        btDel.setText("DELETE");
+        btDel.setBackground(Color.PINK);//배경색 분홍
+        btDel.setText("DELETE");//텍스트 추가
         btDel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Delete actionPerformed()");
-                if(cmd!=DEL){
-                    setEnabled(DEL);
+                if(cmd!=DEL){//cmd = 4 del = 2
+                    setEnabled(DEL);//버튼 활성화
                     tfSno.requestFocus(); //커서
                 }else{
                     delete();//id로 삭제
-                    setEnabled(NONE);
-                    cmd=NONE;
-                    initialTf();
-                    clearTf();
+                    setEnabled(NONE);//버튼 활성화
+                    cmd=NONE;//cmd = 0
+                    initialTf();//입력칸 비활성화
+                    clearTf();//입력칸 빈칸
                 }
             }
         });
-        btCancel.setBackground(Color.PINK);
-        btCancel.setText("CANCEL");
+        btCancel.setBackground(Color.PINK);//배경색 분홍색
+        btCancel.setText("CANCEL");//텍스트 추가
         btCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("actionPerformed()");
-                cmd=NONE;
-                setEnabled(cmd);
-                initialTf();
+                cmd=NONE;//cmd = 0
+                setEnabled(cmd);//버튼 활성화
+                initialTf();//입력칸 빈칸
             }
         });
 
@@ -388,12 +388,12 @@ public class Frame_CS extends JFrame {
         contentPane2.add(lblBG);
     }
 
-    public void changeSeatColor(){
+    public void changeSeatColor(){//버튼의 색을 바꿔주는 메소드
 
-        SeatDTO[] Sdao = null;
-        Sdao = dao.selectAll();
+        SeatDTO[] Sdao = null;//좌석정보 null
+        Sdao = dao.selectAll();//좌석 전체 데이터를 sdao에 저장
         String[][] data = new String[Sdao.length][5];
-        for(int i=0; i< data.length; i++) {
+         for(int i=0; i< data.length; i++) {//sdao의 데이터를 data 문자열 배열에 저장
             data[i][0] = Sdao[i].getRno();  //+"" 로 문자열로 만들어줌
             data[i][1] = Sdao[i].getSno();
             data[i][2] = Sdao[i].getState();
@@ -402,21 +402,26 @@ public class Frame_CS extends JFrame {
         }
 
         for(int i=0; i< data.length; i++) {
-            int Sno = Integer.parseInt(data[i][1]);
-            int period = Integer.parseInt(data[i][4]);
+            int Sno = Integer.parseInt(data[i][1]);//좌석번호
+            int period = Integer.parseInt(data[i][4]);//남은기간
 
-            if(data[i][2] != null) {
+            if(data[i][2] != null) {//state가 null이 아니면
+                //사용중이면 초록색 남은기간이 6미만이면 빨간색으로 배경색 변경
                 if(1 <=Sno && Sno <= 10) {
                     buttons_410_1[Sno-1].setBackground(Color.CYAN);
-
+                    if(period<6) { buttons_410_1[Sno-1].setBackground(Color.RED);}
                 }else if(11 <=Sno && Sno <= 20){
                     buttons_410_2[Sno-11].setBackground(Color.CYAN);
+                    if(period<6) { buttons_410_2[Sno-11].setBackground(Color.RED);}
                 }else if(21 <=Sno && Sno <= 30) {
                     buttons_410_3[Sno-21].setBackground(Color.CYAN);
+                    if(period<6) { buttons_410_3[Sno-21].setBackground(Color.RED);}
                 }else if(31 <=Sno && Sno <= 40) {
                     buttons_410_4[Sno-31].setBackground(Color.CYAN);
+                    if(period<6) { buttons_410_4[Sno-31].setBackground(Color.RED);}
                 }else if(41 <=Sno &&Sno <= 50) {
                     buttons_420[Sno-41].setBackground(Color.CYAN);
+                    if(period<6) { buttons_420[Sno-41].setBackground(Color.RED);}
                 }else{
                     buttons_410_1[Sno-1].setBackground(Color.PINK);
                     buttons_410_2[Sno-11].setBackground(Color.PINK);
@@ -424,15 +429,7 @@ public class Frame_CS extends JFrame {
                     buttons_410_4[Sno-31].setBackground(Color.PINK);
                     buttons_420[Sno-41].setBackground(Color.PINK);
                 }
-
-
-            }else{
-                buttons_410_1[Sno-1].setBackground(Color.PINK);
-                buttons_410_2[Sno-11].setBackground(Color.PINK);
-                buttons_410_3[Sno-21].setBackground(Color.PINK);
-                buttons_410_4[Sno-31].setBackground(Color.PINK);
-                buttons_420[Sno-41].setBackground(Color.PINK);
-            }
+            }//if
         }//for
     }
 
@@ -523,7 +520,7 @@ public class Frame_CS extends JFrame {
     public void add() {
 
         String msg = "";
-
+        //입력창에서 데이터를 받고 저장
         dto.setSno(tfSno.getText());
         dto.setId(tfId.getText());
         dto.setPeriod(tfPeriod.getText());
@@ -537,12 +534,12 @@ public class Frame_CS extends JFrame {
             return;
         }
         //중복성체크
-        if(dao.duplicateCheck(dto)){
+        if(dao.duplicateCheck(dto)){//null이 아니면
             msg = "중복된 좌석번호입니다.";
             JOptionPane.showMessageDialog(this, msg);
             return;
         }
-        if(dao.duplicateSeatCheck(dto)) {
+        if(dao.duplicateSeatCheck(dto)) {//id가 있으면 true
             msg = "사용좌석이 추가됩니다.";
             JOptionPane.showMessageDialog(this, msg);
 
@@ -550,7 +547,7 @@ public class Frame_CS extends JFrame {
 
 
 
-        int n = dao.updateSeatInfo(dto);
+        int n = dao.updateSeatInfo(dto);//데이터가 있으면
         if(n>0) { msg = "좌석지정 성공";
         }else { msg = "좌석지정 실패";
         }
@@ -561,10 +558,10 @@ public class Frame_CS extends JFrame {
     public void showData(int n) {
         SeatDTO[] arr = null;  //자료가 몇개가 될 지 모르므로 null 설정
         if(n==ALL) { //모두보기
-            arr=dao.selectAll();
+            arr=dao.selectAll();//arr에 모든 데이터 추가
         }else if(n==FIND) { //ID 검색
-            String id = tfId.getText();
-            arr = dao.selectById(id);
+            String id = tfId.getText();//텍스트 필드에 있는 데이터 저장
+            arr = dao.selectById(id);//arr에 찾은 id데이터 추가
         }
         if(arr== null ) {  /*****|| arr.length == 0 넣으면 안됌!!!!!!(rs.next()때문)*******/
             JOptionPane.showMessageDialog(this, "현재 등록된 회원 없음.");
@@ -585,7 +582,7 @@ public class Frame_CS extends JFrame {
         model.setDataVector(data, colNames);
         table.setModel(model);
 
-        changeSeatColor();
+        changeSeatColor();//좌석 색 변경
     }
 
     public void delete() {
@@ -608,7 +605,7 @@ public class Frame_CS extends JFrame {
         if(yn == JOptionPane.YES_OPTION) {
             //삭제성공 혹은 삭제실패 확인
             int isDel = dao.deleteSeatInfo(Sno.trim()); //호출 후 삭제 성공 혹은 삭제 실패 메세지 생성
-            if(isDel>0) {
+            if(isDel>0) {//리턴 삭제 1
                 msg = "좌석정보 삭제성공";
             } else {
                 msg = "좌석정보 삭제실패";}
